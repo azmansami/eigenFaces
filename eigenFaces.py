@@ -37,7 +37,6 @@ for i in img_names:
         img_list.append(img)
     
 img_shape = img_list[0].shape
-thumb_size = (int(img_shape[0]/2),int(img_shape[1]/2))
 
 #individual image size 243x320 
 #print (img.size)
