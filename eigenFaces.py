@@ -17,8 +17,8 @@ from PIL import Image
 
 
 img_dir = "/Users/azmansami/yalefaces"
-out_dir = img_dir+"/_reconstructed"
-eface_dir = img_dir+"/_efaces"
+out_dir = path.join(img_dir,"_reconstructed")
+eface_dir = path.join(img_dir,"_efaces")
 
 print("Using Input Image folder: " + img_dir)
 
@@ -88,11 +88,11 @@ for c_idx in range(imgs_mtrx.shape[1]):
 if not path.exists(out_dir): makedirs(out_dir)
 if not path.exists(eface_dir): makedirs(eface_dir)
 for idx, img in enumerate(recons_imgs):
-    sp.misc.imsave(out_dir+"/img_"+str(idx)+".jpg",img)
-sp.misc.imsave(out_dir+"/mean.jpg",mean_img_2d)
+    sp.misc.imsave(path.join(out_dir,"img_"+str(idx)+".jpg"),img)
+sp.misc.imsave(path.join(out_dir,"mean.jpg"),mean_img_2d)
 
 for idx in range(efaces.shape[1]):
-    sp.misc.imsave(eface_dir+"/eface"+str(idx)+".jpg",efaces[:,idx].reshape(img_shape))
+    sp.misc.imsave(path.join(eface_dir,"eface"+str(idx)+".jpg"),efaces[:,idx].reshape(img_shape))
 
 print("Please check " + eface_dir + " for reconstructed images")  
 print("Please check " + out_dir + " for reconstructed images and mean image!")  
