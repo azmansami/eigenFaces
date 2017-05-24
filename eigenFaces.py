@@ -8,12 +8,8 @@ Created on Sun May 21 20:53:49 2017
 
 import scipy as sp
 import numpy as np
-from scipy import misc
-import sys
 from os import listdir, path, makedirs
 import matplotlib.pyplot as plt
-import matplotlib.gridspec as gs
-from PIL import Image
 
 
 img_dir = "/Users/azmansami/yalefaces"
@@ -24,16 +20,10 @@ print("Using Input Image folder: " + img_dir)
 
 img_names = listdir(img_dir)
 img_list = list()
-for i in img_names:
-    if (not i.startswith('.') and i != "Thumbs.db" 
-        and ((".normal" in i) 
-            or (".happy" in i) 
-            or (".sad" in i )
-            or (".glasses" in i)
-            )
-        ):
+for fn in img_names:
+    if (not path.isdir(path.join(img_dir,fn)) and not fn.startswith('.') and fn != "Thumbs.db"):
         #returns a 2D array  
-        img = sp.misc.imread(img_dir+'/'+i,True)        
+        img = sp.misc.imread(path.join(img_dir,fn),True)        
         img_list.append(img)
     
 img_shape = img_list[0].shape
@@ -68,7 +58,7 @@ U,s,V=np.linalg.svd(A, full_matrices=False)
 
 #see eigenValue plot to find whcih eigenVectors are most contributing
 plt.plot(s)
-efaces = U #[:,0:57] #if you want to limit no. of efaces, do it here
+efaces = U#[:,0:50] #if you want to limit no. of efaces, do it here
 
 #calculate weights for each training image.
 #projet the faces in eigenVector space
@@ -92,7 +82,8 @@ for idx, img in enumerate(recons_imgs):
 sp.misc.imsave(path.join(out_dir,"mean.jpg"),mean_img_2d)
 
 for idx in range(efaces.shape[1]):
-    sp.misc.imsave(path.join(eface_dir,"eface"+str(idx)+".jpg"),efaces[:,idx].reshape(img_shape))
+    sp.misc.imsave(path.join(eface_dir,"eface"+str(idx)+".jpg"),
+                   efaces[:,idx].reshape(img_shape))
 
 print("Please check " + eface_dir + " for reconstructed images")  
 print("Please check " + out_dir + " for reconstructed images and mean image!")  
